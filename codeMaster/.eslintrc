@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {  // 在这里声明的变量不会被no-undef规则警告
+    "require": "readonly",
+    "Map": "readonly"
+    // "console": "readonly"
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.1"
+    }
+  },
+  "parser": "babel-eslint",
+  "rules": {
+	  "react/prop-types": 0,
+    "semi":["warn", "never"],
+    "quotes": ["error", "single"], //使用一致的反勾号、双引号或单引号
+    "jsx-quotes": ["error", "prefer-single"], // 强制在 JSX 属性中使用一致的单引号或双引号
+    // "indent": ["error", "tab"],
+    "indent": ["error", 2], //使用两个空格作缩进
+    "space-before-function-paren": ["warn", "always"],
+    // "spaced-comment": ["error","always"],  // 强制在注释中使用一致的空格
+    "space-infix-ops":"warn", // 要求操作符周围有空格
+    "arrow-spacing": "warn",  // 强制箭头函数的箭头前后使用一致的空格
+    "eqeqeq":"off",          // 要求使用 === 和 !==
+    "no-unused-vars":"off", // 禁止出现未使用过的变量
+    "no-console": "off",
+    "no-useless-return":"warn", // 禁止多余的 return 语句
+    "camelcase": [1, {"properties": "always"}], // 强制使用骆驼拼写法命名约定
+    "no-trailing-spaces":"warn", // 禁用行尾空格
+    "no-empty":"warn",          // 禁止出现空语句块
+    "no-multi-spaces": "error", // 禁止使用多个空格
+    "no-mixed-spaces-and-tabs": ["off", "smart-tabs"], // 禁止空格和 tab 的混合缩进
+    "no-extra-parens":"error",   // 禁止不必要的括号
+    "lines-around-comment":["warn", {"beforeBlockComment": true}]  // 强制注释周围有空行
+  }
+}
