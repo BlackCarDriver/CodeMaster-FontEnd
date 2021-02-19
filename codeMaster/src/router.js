@@ -1,15 +1,33 @@
 import React from 'react'
-import { Router, Route, Switch } from 'dva/router'
-import HomePage from './pages/homePage'
+import { Router } from 'dva/router'
+import dynamic from './commom/utils/dynamic'
+import renderRoutes from './commom/utils/renderRoutes'
 
-function RouterConfig ({ history }) {
+// dynamic.setDefaultLoadingComponent(require('./components/PageLoading').default)
+
+export default rawRoutes => ({ history, app }) => {
+  const routes = [
+    {
+      path: '/',
+      redirect: '/home',
+      exact: true
+    },
+    {
+      path: '/',
+      component: dynamic({
+        component: () => import('./pages/wrapper')
+      }),
+      routes: [
+        { path: '/home', exact: true, component: require('./pages/homePage').default },
+        { path: '/createCode', exact: true, component: require('./pages/createCode').default },
+        { path: '*', component: require('./pages/notFound').default}
+      ]
+    }
+  ]
+
   return (
-    <Router history={history}>
-      <Switch>
-        <Route path='/' exact component={HomePage} />
-      </Switch>
+    <Router history={history} basename='/codeMaster'>
+      {renderRoutes(routes)}
     </Router>
   )
 }
-
-export default RouterConfig
