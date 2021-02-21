@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Layout, Menu, Row, Col } from 'antd'
-import { HomeOutlined, ShareAltOutlined } from '@ant-design/icons'
+import { HomeOutlined, ShareAltOutlined, CoffeeOutlined } from '@ant-design/icons'
 import { Link } from 'dva/router'
 
 @connect(({ wrapper }) => ({
@@ -17,14 +17,17 @@ class Wrapper extends Component {
     const { Header, Footer, Content } = Layout
     return (
       <Layout style={{minHeight: '100vh', width: '100vw', backgroundColor:'rgba(255, 255, 255, 0.3)'}}>
-        <Header style={{backgroundColor:'white'}}>
-          <div style={{float:'left', width:'120px', height:'31px'}} />
+        <Header style={{backgroundColor:'white', padding:'0'}}>
+          <a style={{float:'left', width:'200px', height:'100%'}} >
+            <img src='./assets/logo.PNG' alt='logo' style={{width:'100%', height:'100%'}} />
+          </a>
           <Menu theme='light' mode='horizontal' defaultSelectedKeys={['1']}>
             <Menu.Item key='1' icon={<HomeOutlined />}><Link to='/home'>算法广场</Link></Menu.Item>
             <Menu.Item key='2' icon={<ShareAltOutlined />}><Link to='/createCode'>作品分享</Link></Menu.Item>
+            <Menu.Item key='3' icon={<CoffeeOutlined />}><Link to='/about'>关于本站</Link></Menu.Item>
           </Menu>
         </Header>
-        <Content>
+        <Content style={{marginTop: '1em'}}>
           <Row>
             <Col xs={0} sm={1} md={2} />
             <Col xs={24} sm={22} md={20}>
@@ -34,7 +37,8 @@ class Wrapper extends Component {
           </Row>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          BlackCarBackDoor ©2021 Created by BlackCarDriver
+          CodeMaster ©2020 Created by <a href='https://github.com/BlackCarDriver'>BlackCarDriver</a> <br/>
+                粤ICP备2020127063号-1
         </Footer>
       </Layout>
     )

@@ -1,0 +1,46 @@
+.myCard {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    border-radius: 3px;
+    margin-top: 18px;
+    margin-right: 25px;
+    background-image: -webkit-linear-gradient(top,#fff,#f9f9f9);
+}
+
+.myTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.4;
+    font-family: Trebuchet MS,"Geneva CE",lucida,'Microsoft YaHei',sans-serif;
+}
+
+.myType {
+    float: right;
+    color: #333;
+}
+
+.col1 {
+    overflow: hidden;
+}
+
+.goto {
+    text-align: right;
+    font-size: 15px;
+}
+
+a {
+    color: #333;
+}
+
+.desc {
+    line-height: 1.2em;
+    height: 1.2em;
+    margin-top: 5px;
+}
+
+.rate {
+    color: #f0b60796;
+    font-size: 15px;
+}

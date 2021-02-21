@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Card } from 'antd'
+import { Card, Row, Col, Input, Tabs } from 'antd'
+import WorkCard from '../../commom/components/WorkCard'
 
 const namespace = 'homePage'
 
@@ -13,7 +14,7 @@ class HomePage extends Component {
     title: 'SUCCESS'
   }
   componentDidMount = () => {
-    console.debug('init success')
+    this.callModel('queryWorksList')
   }
 
   // 调用 model 处理函数
@@ -31,11 +32,43 @@ class HomePage extends Component {
     })
   }
 
+  // 搜索关键字
+  onSearch = (v) => {
+    console.debug('search value=', v)
+  }
+  onTabChange = (v) => {
+    console.debug('tab changed value=', v)
+  }
+
   render () {
-    const { route } = this.props
+    const { Search } = Input
+    const { TabPane } = Tabs
+    const { worksList } = this.props.model
+
     return (
-      <Card>
-        <h1>{this.state.title}</h1>
+      <Card bordered={false}>
+        <Row align='middle'>
+          <Col offset={8} span={8}><Search placeholder='关键字,作者,类别,标签...' size='middle' onSearch={v => {this.onSearch(v)}} enterButton /></Col>
+        </Row>
+        <Row>
+          <Tabs onChange={v => {this.onTabChange(v)}} type='line' style={{width:'100%'}} defaultActiveKey='recommend'>
+            <TabPane tab='站长推荐' key='recommend'> </TabPane>
+            <TabPane tab='生活问题' key='live'> </TabPane>
+            <TabPane tab='数据结构' key='dataStruct'> </TabPane>
+            <TabPane tab='程序开发' key='development'> </TabPane>
+            <TabPane tab='趣味/恶搞' key='funny'> </TabPane>
+            <TabPane tab='全部作品...' key='all'> </TabPane>
+          </Tabs>
+        </Row>
+        <Row>
+          {
+            worksList.map((item, idx) => {
+              return (
+                <WorkCard key={idx} title={item.title} imgsrc={item.img} author={item.author} types={item.types} desc={item.desc} tags={item.tags}/>
+              )
+            })
+          }
+        </Row>
       </Card>
     )
   }

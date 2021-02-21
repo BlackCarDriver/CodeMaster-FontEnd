@@ -20,6 +20,7 @@ export default rawRoutes => ({ history, app }) => {
       routes: [
         { path: '/home', exact: true, component: require('./pages/homePage').default },
         { path: '/createCode', exact: true, component: require('./pages/createCode').default },
+        { path: '/about', exact: true, component: require('./pages/about').default },
         { path: '*', component: require('./pages/notFound').default}
       ]
     }
