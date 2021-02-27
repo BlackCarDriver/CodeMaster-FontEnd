@@ -2,13 +2,12 @@
 import React, { Component } from 'react'
 import { Avatar, Row, Col, Divider, Typography, Tooltip, Rate } from 'antd'
 import { UserOutlined, RightOutlined } from '@ant-design/icons'
+import { Link } from 'dva/router'
 import style from './style.css'
-
 
 class WorkCard extends Component {
   render () {
-    const {title, types, author, desc, imgsrc, tags} = this.props
-    console.debug(this.props)
+    const {id, title, types, author, desc, imgsrc, tags} = this.props
     const { Text, Paragraph } = Typography
     return (
       <div className={style.myCard}>
@@ -18,12 +17,18 @@ class WorkCard extends Component {
           </Col>
           <Col offset={1} span={18}>
             <Row style={{height: '50%'}}>
-              <Col span={16} className={style.col1}><a className={style.myTitle}>{title}</a></Col>
+              <Col span={16} className={style.col1}>
+                <Link to={`/codeDetail?id=${id}`}><a className={style.myTitle}>{title}</a></Link>
+              </Col>
               <Col span={8} className={style.col1}><a className={style.myType}>[{types}]</a></Col>
             </Row>
             <Row align='bottom' style={{height: '50%'}}>
-              <Col span={18} className={style.col1}><Tooltip title='作者昵称'><a><UserOutlined /> {author}</a></Tooltip></Col>
-              <Col span={6} className={style.goto}><a>前往<RightOutlined /></a></Col>
+              <Col span={18} className={style.col1}>
+                <Tooltip title='作者昵称'><a><UserOutlined /> {author}</a></Tooltip>
+              </Col>
+              <Col span={6} className={style.goto}>
+                <Link to={`/codeDetail?id=${id}`}>前往<RightOutlined /></Link>
+              </Col>
             </Row>
           </Col>
         </Row>

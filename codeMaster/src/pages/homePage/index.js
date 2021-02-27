@@ -64,7 +64,7 @@ class HomePage extends Component {
           {
             worksList.map((item, idx) => {
               return (
-                <WorkCard key={idx} title={item.title} imgsrc={item.img} author={item.author} types={item.types} desc={item.desc} tags={item.tags}/>
+                <WorkCard key={idx} id={item.id} title={item.title} imgsrc={item.img} author={item.author} types={item.types} desc={item.desc} tags={item.tags}/>
               )
             })
           }
