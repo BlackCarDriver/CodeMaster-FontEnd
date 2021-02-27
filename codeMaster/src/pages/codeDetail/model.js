@@ -11,9 +11,12 @@ export default {
       score: 0,
       type: '?',
       language: '?',
-      tags: [],
-      desc: '?',
+      inputDesc:'', // 输入描述
+      inputDemo:'', // 输入例子
+      tags: [], // 标签字符串,使用';'隔开每个标签
+      desc: '?', // 简介
       code: '?',
+      ouputDemo: '',
     },
   },
 
@@ -37,19 +40,26 @@ export default {
         language: 'go',
         tagSrc: '花呗;利息;金融',
         desc: '一个帮助你计算花呗应还金额的算法，帮助你更好理财哦~',
-        code: `<Col span={12}>
-        <Card>
-          <Form.Item>
-            <Input placeholder='这里输入昵称' defaultValue='隐形巨老' maxLength={30}/>
-          </Form.Item>
-          <Form.Item>
-            <TextArea rows={1} placeholder='说些东西吧...' maxLength={250}/>
-          </Form.Item>
-          <Form.Item style={{marginBottom:'0'}}>
-            <Button htmlType='submit' type='primary'>发表评论</Button>
-          </Form.Item>
-        </Card>
-      </Col>`
+        inputDesc: `第一行输入总金额，单位元如：20000
+第二行输入年化率，若为3%则输入：0.03`,
+        inputDemo: '10000 0.03',
+        ouputDemo: '11233.3454',
+        code: `import React, { Component } from 'react'
+
+        class CodeEditer extends Component {
+          render (){
+            console.debug(window)
+            const {hljs} = window
+            const { code } = this.props
+            return(
+              <div style={{backgroundColor:'#f4f4f4', padding:'1em'}}>
+                <pre><code dangerouslySetInnerHTML={{ __html: hljs.highlightAuto(code).value }}/></pre>
+              </div>
+            )
+          }
+        }
+        
+        export default CodeEditer`
       }
       codeDetail.tags = codeDetail.tagSrc.split(';', -1)
       yield put({

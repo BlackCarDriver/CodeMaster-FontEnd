@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { List, Row, Col, Tabs, Breadcrumb, Image, Divider, Typography, Space, Empty, Form, Input, Button, Card } from 'antd'
-import { CommentOutlined, CodeOutlined, ReadOutlined } from '@ant-design/icons'
+import { List, Row, Col, Tabs, Breadcrumb, Image, Divider, Typography, Space, Empty, Form, Input, Button, Card, Tooltip } from 'antd'
+import { CommentOutlined, CodeOutlined, ReadOutlined, CopyOutlined } from '@ant-design/icons'
 import { Link as Link2 } from 'dva/router'
 import CommentList from '../../commom/components/CommentList'
 import CodeEditer from '../../commom/components/CodeEditer'
@@ -53,7 +53,7 @@ class CodeDetail extends Component {
   render () {
     const { TabPane } = Tabs
     const { TextArea } = Input
-    const { Title, Text, Link } = Typography
+    const { Title, Text, Link, Paragraph } = Typography
     const { commentList, codeMessag } = this.props.model
 
     // this.setState({title: `codeID=${codeMessag.title}`})
@@ -68,7 +68,8 @@ class CodeDetail extends Component {
                 <Breadcrumb.Item>{this.state.title}</Breadcrumb.Item>
               </Breadcrumb>
             </Row>
-            <Tabs defaultActiveKey='desc' size='large' style={{minHeight:'600px'}}>
+
+            <Tabs defaultActiveKey='run' size='large' style={{minHeight:'600px'}}>
               <TabPane tab={<span><CommentOutlined />介绍</span>} key='desc'>
                 <Row>
                   <Col span={24}>
@@ -102,14 +103,50 @@ class CodeDetail extends Component {
                 </Row>
               </TabPane>
 
+              {/* 算法执行标签页 */}
               <TabPane tab={<span><CodeOutlined />使用</span>} key='run'>
-      Content of Tab Pane 2
+                <Row>
+                  <Col span={12}>
+                    <Paragraph>
+                      <Title level={5}>格式说明</Title>
+                      <blockquote style={{whiteSpace:'pre'}}>
+                        {codeMessag.inputDesc}
+                      </blockquote>
+                      <Title level={5}>输入案例</Title>
+                      <pre>
+                        {codeMessag.inputDemo}
+                      </pre>
+                      <Title level={5}>预期结果</Title>
+                      <pre>
+                        {codeMessag.ouputDemo}
+                      </pre>
+                    </Paragraph>
+                  </Col>
+                  <br />
+                  <Col span={24}>
+                    <Divider style={{margin:'24px 0 10px 0'}}/>
+                    <Title level={5}>输入数据 👇</Title>
+                  </Col>
+                  <Col span={12}>
+                    <Space direction='vertical' size={8} style={{width:'100%'}}>
+                      <TextArea placeholder='这里输入数据...' allowClear autoSize={{ minRows: 5, maxRows: 10 }}/>
+                      <Button type='primary'>计算结果</Button>
+                      <TextArea placeholder='这里将会展示运行结果...' autoSize={{ minRows: 3, maxRows: 100 }} disabled></TextArea>
+                    </Space>
+                  </Col>
+                </Row>
               </TabPane>
 
               {/* 代码查看标签页 */}
               <TabPane tab={<span><ReadOutlined />查看源码</span>} key='code'>
-                <Text code>main.{codeMessag.language}</Text>
-                <div style={{padding:'1em', border: 'solid 1px rgba(0, 0, 0, 0.08)'}}>
+                <Text code copyable={{
+                  icon: [<CopyOutlined key='1' />],
+                  tooltips: ['点我复制', '复制成功'],
+                  text: codeMessag.code
+                }} >
+                    main.{codeMessag.language}
+                </Text>
+                <div style={{ border: 'solid 1px rgba(0, 0, 0, 0.08)'}}>
                   <CodeEditer code={codeMessag.code}/>
                 </div>
               </TabPane>
