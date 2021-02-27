@@ -123,6 +123,22 @@ export function timeFormater (time, style = 0) {
   return '?' + time
 }
 
+// 算法类型格式化
+export function codeTypeFormater (typeCode) {
+  switch (typeCode) {
+  case '1':
+    return '生活问题'
+  case '2':
+    return '数据结构'
+  case '3':
+    return '程序开发'
+  case '4':
+    return '趣味/恶搞'
+  default:
+    return '' + typeCode + '?'
+  }
+}
+
 // 格式化文件大小
 export function sizeFormater (size) {
   const unit = ['B', 'KB', 'MB', 'GB', 'TB']

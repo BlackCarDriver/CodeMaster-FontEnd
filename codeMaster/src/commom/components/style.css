@@ -44,3 +44,7 @@ a {
     color: #f0b60796;
     font-size: 15px;
 }
+
+.codeEditer {
+    white-space: break-spaces;
+}

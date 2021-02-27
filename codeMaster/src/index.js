@@ -11,6 +11,7 @@ const app = dva()
 
 // 3. Model
 app.model(require('./pages/homePage/model').default)
+app.model(require('./pages/codeDetail/model').default)
 
 // 4. Router
 const menuList = []
