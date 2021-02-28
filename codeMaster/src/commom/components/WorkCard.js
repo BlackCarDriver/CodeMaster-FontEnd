@@ -37,7 +37,7 @@ class WorkCard extends Component {
           <Col span={10}><Rate allowHalf value={4.5} disabled className={style.rate}/></Col>
           <Col span={14}>
             <Paragraph ellipsis>
-              {tags ? tags.map((item,idx) => {return <Text key={idx} code>{item}</Text>}) : ''}
+              {tags ? tags.map((item,idx) => {return <Text key={idx}>{item}<Text type='secondary'> / </Text></Text>}) : ''}
             </Paragraph>
           </Col>
         </Row>

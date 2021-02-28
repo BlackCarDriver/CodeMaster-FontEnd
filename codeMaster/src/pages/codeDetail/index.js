@@ -69,7 +69,7 @@ class CodeDetail extends Component {
               </Breadcrumb>
             </Row>
 
-            <Tabs defaultActiveKey='run' size='large' style={{minHeight:'600px'}}>
+            <Tabs defaultActiveKey='desc' size='large' style={{minHeight:'600px'}}>
               <TabPane tab={<span><CommentOutlined />介绍</span>} key='desc'>
                 <Row>
                   <Col span={24}>

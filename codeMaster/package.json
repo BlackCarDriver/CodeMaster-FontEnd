@@ -7,6 +7,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@uiw/react-codemirror": "^3.0.5",
     "antd": "^4.12.3",
     "babel-plugin-import": "^1.13.3",
     "dva": "^2.4.1",
