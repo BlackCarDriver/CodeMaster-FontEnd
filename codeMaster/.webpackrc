@@ -1,5 +1,16 @@
 {
-  "extraBabelPlugins": [
+"extraBabelPlugins": [
     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
-  ]
+],
+"env": {
+    "development": {},
+    "production": {}
+},
+"proxy": {
+  "/cmapi": {
+    "target": "http://localhost:80/cmapi/",
+    "changeOrigin": true,
+    "pathRewrite": { "^/cmapi" : "" }
+  }
+}
 }

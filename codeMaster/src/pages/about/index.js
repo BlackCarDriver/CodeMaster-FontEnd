@@ -22,6 +22,7 @@ class NotFound extends Component {
             </Typography>
           </Row>
         </Col>
+        <iframe style={{width:330, height:450, frameBorder:'no', border:'0', marginwidth:'0', marginheight:'0'}} src='//music.163.com/outchain/player?type=0&id=6638140300&auto=0&height=430'></iframe>
       </Row>
     )
   }
