@@ -81,7 +81,7 @@ class CodeDetail extends Component {
                       <Text><Text type='secondary'>作者: </Text><Text>{codeMessag.author}</Text></Text>
                       <Text><Text type='secondary'>创作时间: </Text><Text>{timeFormater(codeMessag.timestamp, 0)}</Text></Text>
                       <Text><Text type='secondary'>评分: </Text><Text>{codeMessag.score}</Text></Text>
-                      <Text><Text type='secondary'>分类:  </Text><Text>{codeTypeFormater(codeMessag.type)}</Text></Text>
+                      <Text><Text type='secondary'>分类:  </Text><Text>{codeTypeFormater(codeMessag.ctype)}</Text></Text>
                       <Text><Text type='secondary'>标签: </Text>
                         <Space direction='horizontal' size={5}>
                           {codeMessag.tags.map((item, idx) => {
@@ -99,7 +99,7 @@ class CodeDetail extends Component {
                 <Row style={{marginTop:'30px'}}>
                   <Title level={4}>详细介绍</Title>
                   <Divider style={{margin:'10px 0 24px 0'}}/>
-                  <Empty style={{marginLeft:'10em'}} description='暂无介绍...'/>
+                  <Empty style={{marginLeft:'10em'}} description='暂无详细介绍...'/>
                 </Row>
               </TabPane>
 
@@ -177,7 +177,7 @@ class CodeDetail extends Component {
               <Col span={12}>
                 <Card>
                   <Form.Item>
-                    <Input placeholder='这里输入昵称' defaultValue='隐形巨老' maxLength={30}/>
+                    <Input placeholder='这里输入昵称' defaultValue='隐形巨佬' maxLength={30}/>
                   </Form.Item>
                   <Form.Item>
                     <TextArea rows={1} placeholder='说些东西吧...' maxLength={250}/>

@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.1/build/highlight.min.js"></script> */}
 class CodeEditer extends Component {
   render (){
-    console.debug(window)
     const {hljs} = window
     const { code } = this.props
     return(

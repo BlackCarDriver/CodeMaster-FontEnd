@@ -9,7 +9,7 @@ export default {
       author: '?',
       timestamp: 0,
       score: 0,
-      type: '?',
+      ctype: '?',
       language: '?',
       inputDesc:'', // 输入描述
       inputDemo:'', // 输入例子
@@ -36,7 +36,7 @@ export default {
         author: 'BlackCarDriver',
         timestamp: 1614418811,
         score: 4.6,
-        type: '1',
+        ctype: '1',
         language: 'go',
         tagSrc: '花呗;利息;金融',
         desc: '一个帮助你计算花呗应还金额的算法，帮助你更好理财哦~',
@@ -48,8 +48,6 @@ export default {
 
         class CodeEditer extends Component {
           render (){
-            console.debug(window)
-            const {hljs} = window
             const { code } = this.props
             return(
               <div style={{backgroundColor:'#f4f4f4', padding:'1em'}}>
@@ -61,7 +59,7 @@ export default {
         
         export default CodeEditer`
       }
-      codeDetail.tags = codeDetail.tagSrc.split(';', -1)
+      codeDetail.tags = codeDetail.tagSrc.split(' ', -1)
       yield put({
         type: 'updateState',
         payload: { name: 'codeMessag', newValue: codeDetail }
