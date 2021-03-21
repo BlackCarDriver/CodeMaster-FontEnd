@@ -7,13 +7,14 @@ import style from './style.css'
 
 class WorkCard extends Component {
   render () {
-    const {id, title, types, author, desc, imgsrc, tags} = this.props
+    const {id, title, types, author, desc, imgsrc, tags, score} = this.props
     const { Text, Paragraph } = Typography
+    console.debug('score=', score)
     return (
       <div className={style.myCard}>
         <Row style={{height: '60px'}}>
           <Col span={5}>
-            <Avatar shape='square' style={{width:'100%', height:'100%'}} src={imgsrc} />
+            <Avatar shape='square' style={{width:'60px', height:'65px', border:'solid 1px #b9b6b530', borderRadius: '3px'}} src={imgsrc} />
           </Col>
           <Col offset={1} span={18}>
             <Row style={{height: '50%'}}>
@@ -34,10 +35,10 @@ class WorkCard extends Component {
         </Row>
         <Divider style={{margin:'8px 0px 0px 0px'}}/>
         <Row>
-          <Col span={10}><Rate allowHalf value={4.5} disabled className={style.rate}/></Col>
+          <Col span={10}><Rate allowHalf value={score / 10} disabled className={style.rate}/></Col>
           <Col span={14}>
             <Paragraph ellipsis>
-              {tags ? tags.map((item,idx) => {return <Text key={idx}>{item}<Text type='secondary'> / </Text></Text>}) : ''}
+              {tags ? tags.map((item,idx) => {return <Text key={idx}>{item}{idx + 1 < tags.length ? <Text type='secondary'> / </Text> : ''}</Text>}) : ''}
             </Paragraph>
           </Col>
         </Row>

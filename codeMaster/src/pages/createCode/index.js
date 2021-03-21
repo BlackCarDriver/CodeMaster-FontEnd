@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Row, Col, Tabs, Input, Divider, Button, Space, Dropdown, Menu, Typography, Skeleton, message, Modal, Form, Select } from 'antd'
 import { BugOutlined, CloudUploadOutlined, DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { codeTypeFormater } from '../../commom/utils/util'
 
 import CodeMirror from '@uiw/react-codemirror'
 import 'codemirror/keymap/sublime'
@@ -55,8 +56,10 @@ class CreateCode extends Component {
       //...
     }else{
       // 更新提交作品表单的值
-      const {passInput, passOutput, passCode} = this.state
-      this.submitRef.setFieldsValue({demoInput: passInput, demoOuput:passOutput, code: passCode})
+      if (this.submitRef){
+        const {passInput, passOutput, passCode} = this.state
+        this.submitRef.setFieldsValue({demoInput: passInput, demoOuput:passOutput, code: passCode})
+      }
     }
   }
 
@@ -195,11 +198,12 @@ class CreateCode extends Component {
     if (v.author == undefined || v.author == '' ) v.author = '隐形巨佬'
     if (v.tagStr == undefined) v.tagStr = ''
     if (v.detail == undefined) v.detail = ''
-    if (v.imgSrc == undefined) v.imgSrc = ''
     if (v.demoInput == undefined) v.demoInput = ''
     if (v.demoOuput == undefined) v.demoOuput = ''
     if (v.detail == undefined) v.detail = ''
     if (v.language == undefined) v.language = this.state.selectlanguage
+    if (v.language == 'C++') v.language = 'CPP'
+    v.coverUrl = 'https://img-blog.csdnimg.cn/20210321132519810.JPG'
     v.ctype = parseInt(v.ctype)
     return ''
   }
@@ -249,7 +253,7 @@ class CreateCode extends Component {
     return (
       <Row>
         <Col span={18} pull={3} push={3}>
-          <Tabs size='middle' type='card' defaultActiveKey='submit' onChange={(v) => {this.onTagChange(v)}}>
+          <Tabs size='middle' type='card' defaultActiveKey='debug' onChange={(v) => {this.onTagChange(v)}}>
             {/* 代码测试标签页 */}
             <TabPane key='debug' tab={<span><BugOutlined />代码测试</span>}>
               <Row style={{marginBottom: '1em'}}>
@@ -299,22 +303,19 @@ class CreateCode extends Component {
                 <Text type='secondary'>debug代码通过后方可解锁此功能....</Text>
                 <Skeleton paragraph={{ rows: 8 }}/>
               </Row>
-              <Row hidden={!debugPass}>
+              <Row hidden={debugPass}>
                 <Col offset={1} span={23}>
                   <Form initialValues={{author: '隐形巨佬', ctype: '0'}} onFinish={this.submitMyCode} ref={form => { this.submitRef = form }} labelCol={{span: 4}} wrapperCol={{span:10}}>
                     <Form.Item tooltip='给你的作品起个漂亮的名字或标题吧' label='作品名称' name='title'>
-                      <Input />
-                    </Form.Item>
-                    <Form.Item hidden name='imgSrc'>
-                      <Input value=''/>
+                      <Input maxLength={20}/>
                     </Form.Item>
                     <Form.Item tooltip='设置正确的分类可以让其他用户' label='算法类型' name='ctype'>
                       <Select defaultValue='其他'>
-                        <Option key='0'>其他</Option>
-                        <Option key='1'>生活问题</Option>
-                        <Option key='2'>数据结构与算法</Option>
-                        <Option key='3'>程序开发</Option>
-                        <Option key='4'>趣味/恶搞</Option>
+                        <Option key='0'>{codeTypeFormater(0)}</Option>
+                        <Option key='1'>{codeTypeFormater(1)}</Option>
+                        <Option key='2'>{codeTypeFormater(2)}</Option>
+                        <Option key='3'>{codeTypeFormater(3)}</Option>
+                        <Option key='4'>{codeTypeFormater(4)}</Option>
                       </Select>
                     </Form.Item>
                     <Form.Item tooltip='不写就是巨佬喔' label='作者昵称' name='author'>
@@ -336,7 +337,8 @@ class CreateCode extends Component {
                       <TextArea key={debugPass} defaultValue={passOutput} maxLength={8000} placeholder='(选填)' autoSize={{ minRows: 1, maxRows: 5 }}/>
                     </Form.Item>
                     <Form.Item tooltip='debug通过的代码' label='程序源码' name='code' >
-                      <TextArea key={debugPass} defaultValue={passCode} disabled autoSize={{ minRows: 5, maxRows: 10 }}/>
+                      {/* <TextArea key={debugPass} defaultValue={passCode} disabled autoSize={{ minRows: 5, maxRows: 10 }}/> */}
+                      <TextArea key={debugPass} defaultValue={passCode} autoSize={{ minRows: 5, maxRows: 10 }}/>
                     </Form.Item>
                     <Form.Item tooltip='详细地描述一下你的作品吧,如原理、作用...' label='详细介绍'>
                       <Button type='dashed' onClick={() => this.setState({detailVisable: true})}>点我编辑</Button>

@@ -125,7 +125,10 @@ export function timeFormater (time, style = 0) {
 
 // 算法类型格式化
 export function codeTypeFormater (typeCode) {
+  typeCode = '' + typeCode
   switch (typeCode) {
+  case '0':
+    return '其他'
   case '1':
     return '生活问题'
   case '2':
