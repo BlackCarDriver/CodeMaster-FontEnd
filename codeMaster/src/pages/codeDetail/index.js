@@ -31,8 +31,8 @@ class CodeDetail extends Component {
     console.debug('codeID=', codeID)
     this.setState({title: `codeID=${codeID}`})
     // 获取评论数据
-    this.callModel('queryCommentList')
-    this.callModel('queryCodeMessage')
+    this.callModel('queryCommentList', {codeID: codeID})
+    this.callModel('queryCodeMessage', {codeID: codeID})
   }
 
   // 调用 model 处理函数
@@ -54,9 +54,7 @@ class CodeDetail extends Component {
     const { TabPane } = Tabs
     const { TextArea } = Input
     const { Title, Text, Link, Paragraph } = Typography
-    const { commentList, codeMessag } = this.props.model
-
-    // this.setState({title: `codeID=${codeMessag.title}`})
+    const { commentList, codeMessage } = this.props.model
 
     return (
       <div>
@@ -73,33 +71,33 @@ class CodeDetail extends Component {
               <TabPane tab={<span><CommentOutlined />介绍</span>} key='desc'>
                 <Row>
                   <Col span={24}>
-                    <Title level={3}>{codeMessag.title}</Title>
+                    <Title level={3}>{codeMessage.title}</Title>
                   </Col>
-                  <Col><Image height={130} style={{maxWidth:'300px'}} src={codeMessag.imgSrc}/></Col>
+                  <Col><Image height={130} style={{maxWidth:'300px'}} src={codeMessage.coverUrl}/></Col>
                   <Col span={15} style={{paddingLeft: '10px'}}>
                     <Space direction='vertical' size={0}>
-                      <Text><Text type='secondary'>作者: </Text><Text>{codeMessag.author}</Text></Text>
-                      <Text><Text type='secondary'>创作时间: </Text><Text>{timeFormater(codeMessag.timestamp, 0)}</Text></Text>
-                      <Text><Text type='secondary'>评分: </Text><Text>{codeMessag.score}</Text></Text>
-                      <Text><Text type='secondary'>分类:  </Text><Text>{codeTypeFormater(codeMessag.ctype)}</Text></Text>
+                      <Text><Text type='secondary'>作者: </Text><Text>{codeMessage.author}</Text></Text>
+                      <Text><Text type='secondary'>创作时间: </Text><Text>{timeFormater(codeMessage.timestamp, 0)}</Text></Text>
+                      <Text><Text type='secondary'>评分: </Text><Text>{codeMessage.score}</Text></Text>
+                      <Text><Text type='secondary'>分类:  </Text><Text>{codeTypeFormater(codeMessage.ctype)}</Text></Text>
                       <Text><Text type='secondary'>标签: </Text>
                         <Space direction='horizontal' size={5}>
-                          {codeMessag.tags.map((item, idx) => {
-                            if (idx + 1 != codeMessag.tags.length) {
+                          {codeMessage.tags.map((item, idx) => {
+                            if (idx + 1 != codeMessage.tags.length) {
                               return <><Link key={idx}>{item}</Link><Text>/</Text></>
                             }
                             return <><Link key={idx}>{item}</Link></>
                           })}
                         </Space>
                       </Text>
-                      <Text type='secondary'>简介: <Text>{codeMessag.desc}</Text></Text>
+                      <Text type='secondary'>简介: <Text>{codeMessage.desc}</Text></Text>
                     </Space>
                   </Col>
                 </Row>
                 <Row style={{marginTop:'30px'}}>
                   <Title level={4}>详细介绍</Title>
                   <Divider style={{margin:'10px 0 24px 0'}}/>
-                  <Empty style={{marginLeft:'10em'}} description='暂无详细介绍...'/>
+                  {codeMessage.detail ? <div className='html-wrap' dangerouslySetInnerHTML={{ __html: codeMessage.detail }} /> : <Empty style={{marginLeft:'10em'}} description='暂无详细介绍...' />}
                 </Row>
               </TabPane>
 
@@ -110,15 +108,15 @@ class CodeDetail extends Component {
                     <Paragraph>
                       <Title level={5}>格式说明</Title>
                       <blockquote style={{whiteSpace:'pre'}}>
-                        {codeMessag.inputDesc}
+                        {codeMessage.inputDesc}
                       </blockquote>
                       <Title level={5}>输入案例</Title>
                       <pre>
-                        {codeMessag.inputDemo}
+                        {codeMessage.demoInput}
                       </pre>
                       <Title level={5}>预期结果</Title>
                       <pre>
-                        {codeMessag.ouputDemo}
+                        {codeMessage.demoOuput}
                       </pre>
                     </Paragraph>
                   </Col>
@@ -142,12 +140,12 @@ class CodeDetail extends Component {
                 <Text code copyable={{
                   icon: [<CopyOutlined key='1' />],
                   tooltips: ['点我复制', '复制成功'],
-                  text: codeMessag.code
+                  text: codeMessage.code
                 }} >
-                    main.{codeMessag.language}
+                    main.{codeMessage.language}
                 </Text>
                 <div style={{ border: 'solid 1px rgba(0, 0, 0, 0.08)'}}>
-                  <CodeEditer code={codeMessag.code}/>
+                  <CodeEditer code={codeMessage.code}/>
                 </div>
               </TabPane>
             </Tabs>
@@ -165,7 +163,7 @@ class CodeDetail extends Component {
                       <li>
                         <CommentList
                           author={item.author}
-                          imgSrc={item.imgSrc}
+                          imgSrc={item.coverUrl}
                           desc={item.desc}
                           timestamp={item.timestamp}
                         />

@@ -1,8 +1,10 @@
+import { codeMasterAPI } from '../../commom/services/example'
+
 export default {
   namespace: 'codeDetail',
   state: {
     commentList: [],
-    codeMessag:{
+    codeMessage:{
       id: 0,
       title: '?',
       imgSrc: '?',
@@ -28,57 +30,82 @@ export default {
   },
 
   effects: {
+    // 查询作品详细信息
     * queryCodeMessage ({ payload }, { select, call, put }) {
-      let codeDetail = {
-        id: 0,
-        title: '花呗计算器',
-        imgSrc: 'https://s.cn.bing.net/th?id=ODL.43dbcf956265593b1ae5870324172b9c&w=94&h=131&c=7&rs=1&qlt=80&pid=RichNav',
-        author: 'BlackCarDriver',
-        timestamp: 1614418811,
-        score: 4.6,
-        ctype: '1',
-        language: 'go',
-        tagSrc: '花呗;利息;金融',
-        desc: '一个帮助你计算花呗应还金额的算法，帮助你更好理财哦~',
-        inputDesc: `第一行输入总金额，单位元如：20000
-第二行输入年化率，若为3%则输入：0.03`,
-        inputDemo: '10000 0.03',
-        ouputDemo: '11233.3454',
-        code: `import React, { Component } from 'react'
+      // let codeDetail = {
+      //   id: 0,
+      //   title: '花呗计算器',
+      //   coverUrl: 'https://s.cn.bing.net/th?id=ODL.43dbcf956265593b1ae5870324172b9c&w=94&h=131&c=7&rs=1&qlt=80&pid=RichNav',
+      //   author: 'BlackCarDriver',
+      //   timestamp: 1614418811,
+      //   score: 4.6,
+      //   ctype: '1',
+      //   language: 'go',
+      //   tagSrc: '花呗;利息;金融',
+      //   desc: '一个帮助你计算花呗应还金额的算法，帮助你更好理财哦~',
+      //   inputDesc: `第一行输入总金额，单位元如：20000
+      // 第二行输入年化率，若为3%则输入：0.03`,
+      //   demoInput: '10000 0.03',
+      //   demoOuput: '11233.3454',
+      //   code: `import React, { Component } from 'react'
 
-        class CodeEditer extends Component {
-          render (){
-            const { code } = this.props
-            return(
-              <div style={{backgroundColor:'#f4f4f4', padding:'1em'}}>
-                <pre><code dangerouslySetInnerHTML={{ __html: hljs.highlightAuto(code).value }}/></pre>
-              </div>
-            )
-          }
-        }
-        
-        export default CodeEditer`
+      //         class CodeEditer extends Component {
+      //           render (){
+      //             const { code } = this.props
+      //             return(
+      //               <div style={{backgroundColor:'#f4f4f4', padding:'1em'}}>
+      //                 <pre><code dangerouslySetInnerHTML={{ __html: hljs.highlightAuto(code).value }}/></pre>
+      //               </div>
+      //             )
+      //           }
+      //         }
+      //         export default CodeEditer`
+      // }
+      // codeDetail.tags = codeDetail.tagSrc.split(' ', -1)
+
+      const {codeID} = payload
+      console.debug('codeID=', codeID)
+      let res = yield call(codeMasterAPI, `/codeDetail/getDetailByID?id=${codeID}`, null, false)
+      console.debug('res=', res)
+      if (!res) {
+        return
       }
-      codeDetail.tags = codeDetail.tagSrc.split(' ', -1)
+      res.tags = res.tagStr.split(' ', -1)
+
       yield put({
         type: 'updateState',
-        payload: { name: 'codeMessag', newValue: codeDetail }
+        payload: { name: 'codeMessage', newValue: res }
       })
     },
+    // 查询评论列表
     * queryCommentList ({ payload }, { select, call, put }) {
-      const commentList = [
-        {author:'BlackCarDri', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-        {author:'BlackCarDriv', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-        {author:'BlackCarDrive', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-        {author:'BlackCarDriver', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-        {author:'BlackCarDriver2', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-        {author:'BlackCarDriver', timestamp:1614403507, imgSrc:'https://s.cn.bing.net/th?id=ODL.ece8b589cb3bf04f49f0cb6c7cdb12c8&w=94&h=131&c=7&rs=1&qlt=80&pid=RichNav', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
-      ]
-      console.debug('commentList=', commentList)
+      // const commentList = [
+      //   {author:'BlackCarDri', timestamp:1614403507, imgSrc:'', desc: '<span key="comment-basic-reply-to">Reply to</span>'},
+      // ]
+      // console.debug('commentList=', commentList)
+      const {codeID} = payload
+      console.debug('codeID=', codeID)
+      let res = yield call(codeMasterAPI, `/codeDetail/getCommentList?workId=${codeID}`, null, false)
+      console.debug('res=', res)
+      if (!res) {
+        return
+      }
       yield put({
         type: 'updateState',
-        payload: { name: 'commentList', newValue: commentList }
+        payload: { name: 'commentList', newValue: res }
       })
+    },
+    // 提交评论
+    *subMitComment ({payload}, {select, call, put}) {
+      const {params, callbackFunc} = payload
+      console.debug('codeID=', params)
+      let res = yield call(codeMasterAPI, '/codeDetail/submitComment', params, true)
+      console.debug('res=', res)
+      if (res) {
+        callbackFunc(true)
+      }else{
+        callbackFunc(false)
+      }
     }
   }
 }
