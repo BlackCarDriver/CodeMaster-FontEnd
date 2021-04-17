@@ -98,7 +98,6 @@ export default {
     // 提交评论
     *subMitComment ({payload}, {select, call, put}) {
       const {params, callbackFunc} = payload
-      console.debug('codeID=', params)
       let res = yield call(codeMasterAPI, '/codeDetail/submitComment', params, true)
       console.debug('res=', res)
       if (res) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { List, Row, Col, Tabs, Breadcrumb, Image, Divider, Typography, Space, Empty, Form, Input, Button, Card, Tooltip } from 'antd'
+import { List, Row, Col, Tabs, Breadcrumb, Image, Divider, Typography, Space, Empty, Form, Input, Button, Card, Tooltip, message } from 'antd'
 import { CommentOutlined, CodeOutlined, ReadOutlined, CopyOutlined } from '@ant-design/icons'
 import { Link as Link2 } from 'dva/router'
 import CommentList from '../../commom/components/CommentList'
@@ -15,7 +15,8 @@ const namespace = 'codeDetail'
 
 class CodeDetail extends Component {
   state = {
-    title: ''
+    title: '',
+    codeID: '',
   }
   componentDidMount = () => {
     // 获取路由url参数并获取算法详情信息
@@ -29,7 +30,7 @@ class CodeDetail extends Component {
       }
     }
     console.debug('codeID=', codeID)
-    this.setState({title: `codeID=${codeID}`})
+    this.setState({title: `codeID=${codeID}`, codeID: codeID})
     // 获取评论数据
     this.callModel('queryCommentList', {codeID: codeID})
     this.callModel('queryCodeMessage', {codeID: codeID})
@@ -48,6 +49,27 @@ class CodeDetail extends Component {
     this.callModel('updateState', {
       name: name, newValue: newValue
     })
+  }
+  // 提交评论
+  submitComment = (v) => {
+    console.debug('comment=', v)
+    const {comment, author} = v
+    if (comment == '' || author == '') {
+      message.warn('请填写昵称或评论内容')
+      return
+    }
+    let callbackFunc = (ok) => {
+      if (ok) {
+        message.success('评论成功')
+      }else{
+        message.warn('评论失败')
+      }
+    }
+    const {codeID} = this.state
+    this.callModel('subMitComment',
+      {params: {comment: comment, author: author, workId: codeID}, callbackFunc: callbackFunc}
+    )
+
   }
 
   render () {
@@ -174,15 +196,17 @@ class CodeDetail extends Component {
               <Divider />
               <Col span={12}>
                 <Card>
-                  <Form.Item>
-                    <Input placeholder='这里输入昵称' defaultValue='隐形巨佬' maxLength={30}/>
-                  </Form.Item>
-                  <Form.Item>
-                    <TextArea rows={1} placeholder='说些东西吧...' maxLength={250}/>
-                  </Form.Item>
-                  <Form.Item style={{marginBottom:'0'}}>
-                    <Button htmlType='submit' type='primary'>发表评论</Button>
-                  </Form.Item>
+                  <Form onFinish={(v) => {this.submitComment(v)}} initialValues={{author:'隐形巨佬', comment:''}}>
+                    <Form.Item name='author' >
+                      <Input placeholder='这里输入昵称' defaultValue='隐形巨佬' maxLength={30}/>
+                    </Form.Item>
+                    <Form.Item name='comment'>
+                      <TextArea rows={1} placeholder='说些东西吧...' maxLength={250}/>
+                    </Form.Item>
+                    <Form.Item style={{marginBottom:'0'}}>
+                      <Button htmlType='submit' type='primary'>发表评论</Button>
+                    </Form.Item>
+                  </Form>
                 </Card>
               </Col>
             </Row>
