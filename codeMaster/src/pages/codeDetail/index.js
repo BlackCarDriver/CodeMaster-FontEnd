@@ -61,6 +61,8 @@ class CodeDetail extends Component {
     let callbackFunc = (ok) => {
       if (ok) {
         message.success('评论成功')
+        this.callModel('queryCommentList', {codeID: codeID})
+        this.recommendRef.resetFields()
       }else{
         message.warn('评论失败')
       }
@@ -196,7 +198,7 @@ class CodeDetail extends Component {
               <Divider />
               <Col span={12}>
                 <Card>
-                  <Form onFinish={(v) => {this.submitComment(v)}} initialValues={{author:'隐形巨佬', comment:''}}>
+                  <Form onFinish={(v) => {this.submitComment(v)}} ref={(v) => {this.recommendRef = v}} initialValues={{author:'隐形巨佬', comment:''}}>
                     <Form.Item name='author' >
                       <Input placeholder='这里输入昵称' defaultValue='隐形巨佬' maxLength={30}/>
                     </Form.Item>

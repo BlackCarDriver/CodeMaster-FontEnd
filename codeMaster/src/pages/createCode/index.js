@@ -39,10 +39,9 @@ class CreateCode extends Component {
           [{ 'color': [] }, { 'background': [] }],
           ['link'],
           ['clean']
-
         ],
       },
-    }
+    },
   }
   componentDidMount = () => {
     setTimeout(() => { // 初始化控制台表单
@@ -56,13 +55,16 @@ class CreateCode extends Component {
       //...
     }else{
       // 更新提交作品表单的值
-      if (this.submitRef){
-        const {passInput, passOutput, passCode} = this.state
-        this.submitRef.setFieldsValue({demoInput: passInput, demoOuput:passOutput, code: passCode})
-      }
+      setTimeout(() => {
+        if (this.submitRef){
+          const {passInput, passOutput, passCode} = this.state
+          this.submitRef.setFieldsValue({demoInput: passInput, demoOuput:passOutput, code: passCode})
+          console.debug('the file have been set...')
+        }
+      }, 500)
+      
     }
   }
-
   // 调用 model 处理函数
   callModel = (funcName, params) => {
     const { dispatch } = this.props
@@ -77,10 +79,9 @@ class CreateCode extends Component {
       name: name, newValue: newValue
     })
   }
-
   // 显示确认模态框
   showConfirm = (desc, callbackFunc) => {
-    confirm({
+    Modal.confirm({
       icon: <ExclamationCircleOutlined />,
       content: desc,
       okText: '是',
@@ -88,7 +89,6 @@ class CreateCode extends Component {
       onOk () {callbackFunc()}
     })
   }
-
   // 选择的语言发生变更
   onSelectLanguage = (lang) => {
     const {selectlanguage} = this.state
@@ -119,7 +119,8 @@ class CreateCode extends Component {
         this.setConsoleValue('output','\n----------------- std Output -------------- \n' + stdOut, true)
         message.success('代码通过测试啦,快去分享作品吧!')
       }
-      this.setState({debugPass: true, passCode: debugCode, passInput: inputValue, passOutput: stdOut})
+      this.setState({passCode: debugCode, passInput: inputValue, passOutput: stdOut})
+      this.setState({debugPass: true})
     }
     let params = {
       code: debugCode,
@@ -203,7 +204,7 @@ class CreateCode extends Component {
     if (v.detail == undefined) v.detail = ''
     if (v.language == undefined) v.language = this.state.selectlanguage
     if (v.language == 'C++') v.language = 'CPP'
-    v.coverUrl = 'https://img-blog.csdnimg.cn/20210321132519810.JPG'
+    v.coverUrl = 'https://img-blog.csdnimg.cn/20210321132519810.JPG' // 默认封面
     v.ctype = parseInt(v.ctype)
     return ''
   }
@@ -219,6 +220,7 @@ class CreateCode extends Component {
     let callbackFunc = (ok) => {
       if (ok) {
         message.success('提交成功!')
+        this.submitRef.resetFields()
       }else{
         message.error('出错了,请稍后再试...')
       }
@@ -303,7 +305,7 @@ class CreateCode extends Component {
                 <Text type='secondary'>debug代码通过后方可解锁此功能....</Text>
                 <Skeleton paragraph={{ rows: 8 }}/>
               </Row>
-              <Row hidden={debugPass}>
+              <Row hidden={!debugPass}>
                 <Col offset={1} span={23}>
                   <Form initialValues={{author: '隐形巨佬', ctype: '0'}} onFinish={this.submitMyCode} ref={form => { this.submitRef = form }} labelCol={{span: 4}} wrapperCol={{span:10}}>
                     <Form.Item tooltip='给你的作品起个漂亮的名字或标题吧' label='作品名称' name='title'>
@@ -330,15 +332,15 @@ class CreateCode extends Component {
                     <Form.Item tooltip='告诉其他使用者程序输入的格式呢' label='输入格式说明' name='inputDesc'>
                       <TextArea maxLength={400} placeholder='输入数据的格式或含义' autoSize={{ minRows: 1, maxRows: 5 }}/>
                     </Form.Item>
-                    <Form.Item tooltip='给出一个程序输入的例子' label='样例输入' name='demoInput'>
-                      <TextArea key={debugPass} defaultValue={passInput} maxLength={8000} placeholder='(选填)' autoSize={{ minRows: 1, maxRows: 5 }}/>
+                    <Form.Item tooltip='给出一个程序输入的例子' label='样例输入' name='demoInput' >
+                      <TextArea defaultValue={passInput} maxLength={8000} placeholder='(选填)' autoSize={{ minRows: 1, maxRows: 5 }}/>
                     </Form.Item>
-                    <Form.Item tooltip='样例输入得到的程序输出' label='期待输出' name='demoOuput'>
-                      <TextArea key={debugPass} defaultValue={passOutput} maxLength={8000} placeholder='(选填)' autoSize={{ minRows: 1, maxRows: 5 }}/>
+                    <Form.Item tooltip='样例输入得到的程序输出' label='期待输出' name='demoOuput' >
+                      <TextArea defaultValue={passOutput} maxLength={8000} placeholder='(选填)'autoSize={{ minRows: 1, maxRows: 5 }}/>
                     </Form.Item>
-                    <Form.Item tooltip='debug通过的代码' label='程序源码' name='code' >
+                    <Form.Item tooltip='debug通过的代码' label='程序源码' name='code'>
                       {/* <TextArea key={debugPass} defaultValue={passCode} disabled autoSize={{ minRows: 5, maxRows: 10 }}/> */}
-                      <TextArea key={debugPass} defaultValue={passCode} autoSize={{ minRows: 5, maxRows: 10 }}/>
+                      <TextArea defaultValue={passCode} autoSize={{ minRows: 5, maxRows: 10 }}/>
                     </Form.Item>
                     <Form.Item tooltip='详细地描述一下你的作品吧,如原理、作用...' label='详细介绍'>
                       <Button type='dashed' onClick={() => this.setState({detailVisable: true})}>点我编辑</Button>

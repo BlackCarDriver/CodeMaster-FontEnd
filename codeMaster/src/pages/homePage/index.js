@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Card, Row, Col, Input, Tabs } from 'antd'
 import WorkCard from '../../commom/components/WorkCard'
-import { trySeveralTimes } from '../../commom/utils/util'
+import { trySeveralTimes, codeTypeFormater } from '../../commom/utils/util'
 
 const namespace = 'homePage'
 
@@ -56,6 +56,8 @@ class HomePage extends Component {
   }
   onTabChange = (v) => {
     console.debug('tab changed value=', v)
+    this.changeState('filterType', v)
+    this.callModel('updateWorksList')
   }
 
   render () {
@@ -72,12 +74,12 @@ class HomePage extends Component {
           </Row>
           <Row>
             <Tabs onChange={v => {this.onTabChange(v)}} type='line' style={{width:'100%'}} defaultActiveKey='recommend'>
-              <TabPane tab='站长推荐' key='recommend'> </TabPane>
-              <TabPane tab='生活问题' key='live'> </TabPane>
-              <TabPane tab='数据结构' key='dataStruct'> </TabPane>
-              <TabPane tab='程序开发' key='development'> </TabPane>
-              <TabPane tab='趣味/恶搞' key='funny'> </TabPane>
-              <TabPane tab='全部作品...' key='all'> </TabPane>
+              <TabPane tab='站长推荐' key={99}> </TabPane>
+              <TabPane tab={codeTypeFormater(1)} key={1}> </TabPane>
+              <TabPane tab={codeTypeFormater(2)} key={2}> </TabPane>
+              <TabPane tab={codeTypeFormater(3)} key={3}> </TabPane>
+              <TabPane tab={codeTypeFormater(4)} key={4}> </TabPane>
+              <TabPane tab={codeTypeFormater(0)} key={0}> </TabPane>
             </Tabs>
           </Row>
           <Row>
