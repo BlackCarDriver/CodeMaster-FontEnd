@@ -105,6 +105,22 @@ export default {
       }else{
         callbackFunc(false)
       }
+    },
+    // 执行算法
+    *runWork ({payload}, {select, call, put}) {
+      const {params, callbackFunc} = payload
+      let res = yield call(codeMasterAPI, '/codeDetail/runWork', params, true)
+      if (!res) {
+        callbackFunc(false, '')
+        return
+      }
+      const { stdErr, stdOut } = res
+      console.debug(res)
+      if (stdErr != '') {
+        callbackFunc(false, stdErr)
+        return
+      }
+      callbackFunc(true, stdOut)
     }
   }
 }

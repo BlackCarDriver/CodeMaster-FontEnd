@@ -17,6 +17,8 @@ class CodeDetail extends Component {
   state = {
     title: '',
     codeID: '',
+    runInput: '',
+    isRunning: false,
   }
   componentDidMount = () => {
     // 获取路由url参数并获取算法详情信息
@@ -73,12 +75,30 @@ class CodeDetail extends Component {
     )
 
   }
+  // 执行算法
+  runWork = (v) => {
+    const {codeID, runInput} = this.state
+    this.setState({isRunning: true})
+    this.callModel('runWork', {
+      params:{workId: codeID, input: runInput},
+      callbackFunc: (ok, payload) => {
+        this.setState({isRunning: false})
+        if (ok) {
+          message.success('执行成功')
+          this.setState({runOuput: payload})
+        }else{
+          message.warn('执行失败')
+        }
+      }
+    })
+  }
 
-  render () {
+  render = () => {
     const { TabPane } = Tabs
     const { TextArea } = Input
     const { Title, Text, Link, Paragraph } = Typography
     const { commentList, codeMessage } = this.props.model
+    const { runOuput, isRunning } = this.state
 
     return (
       <div>
@@ -151,9 +171,9 @@ class CodeDetail extends Component {
                   </Col>
                   <Col span={12}>
                     <Space direction='vertical' size={8} style={{width:'100%'}}>
-                      <TextArea placeholder='这里输入数据...' allowClear autoSize={{ minRows: 5, maxRows: 10 }}/>
-                      <Button type='primary'>计算结果</Button>
-                      <TextArea placeholder='这里将会展示运行结果...' autoSize={{ minRows: 3, maxRows: 100 }} disabled></TextArea>
+                      <TextArea placeholder='这里输入数据...' allowClear autoSize={{ minRows: 5, maxRows: 10 }} onChange={(e) => this.setState({runInput: e.target.value})}/>
+                      <Button type='primary' loading={isRunning} onClick={() => {this.runWork()}}>计算结果</Button>
+                      <TextArea placeholder='这里将会展示运行结果...' autoSize={{ minRows: 3, maxRows: 100 }} key={runOuput} value={runOuput}></TextArea>
                     </Space>
                   </Col>
                 </Row>
