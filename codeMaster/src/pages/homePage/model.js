@@ -1,7 +1,7 @@
 import { codeMasterAPI } from '../../commom/services/example'
 import {codeTypeFormater} from '../../commom/utils/util'
 
-
+// 根据选中的类型筛选作品
 function filterData (rawList, filterType) {
   let newList = []
   if (filterType != 99){
@@ -12,12 +12,26 @@ function filterData (rawList, filterType) {
   return newList
 }
 
+// 根据输入框输入的关键字筛选作品列表
+function filterDataByKeyWord (rawList, keyword) {
+  let newList = []
+  if (keyword === '') return newList
+  newList = rawList.filter((v) => {
+    if ( v.title.indexOf(keyword) >= 0) return true
+    if ( v.author.indexOf(keyword) >= 0) return true
+    if ( v.tagStr.indexOf(keyword) >= 0) return true
+    if ( v.desc.indexOf(keyword) >= 0) return true
+  })
+  return newList
+}
+
 export default {
   namespace: 'homePage',
   state: {
     rawList: [],
     worksList: [],
     filterType: 99,
+    filterKeyword: '',
   },
 
   reducers: {
@@ -28,6 +42,10 @@ export default {
     updateWorksList (state, { payload }) {
       const { rawList, filterType } = state
       return { ...state, worksList: filterData(rawList, filterType) }
+    },
+    updateWorksList2 (state, { payload }) {
+      const { rawList, filterKeyword } = state
+      return { ...state, worksList: filterDataByKeyWord(rawList, filterKeyword) }
     }
   },
 
@@ -37,20 +55,6 @@ export default {
       if (!res) {
         return
       }
-      // let tempList = [
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      //   {id: 123, title:'花呗计算机', author: '黑车司机', coverUrl:'https://img-blog.csdnimg.cn/20210221143438117.PNG', ctype: 1, desc: '计算你的花呗利息', tagStr: '花呗 利息计算 利率 利益'},
-      // ]
-      // res = tempList
       // 对一些字段做处理
       for(let i = 0; i < res.length; i++){
         res[i].tags = res[i].tagStr.split(' ', -1)

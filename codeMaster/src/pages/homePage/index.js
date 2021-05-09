@@ -52,7 +52,7 @@ class HomePage extends Component {
 
   // 搜索关键字
   onSearch = (v) => {
-    console.debug('search value=', v)
+    this.callModel('updateWorksList2')
   }
   onTabChange = (v) => {
     console.debug('tab changed value=', v)
@@ -70,7 +70,7 @@ class HomePage extends Component {
       <div ref={box => {this.boxref = box}}>
         <Card bordered={false} style={{padding: `0 ${boxPadding}px`}}>
           <Row align='middle'>
-            <Col offset={8} span={8}><Search placeholder='关键字,作者,类别,标签...' size='middle' onSearch={v => {this.onSearch(v)}} enterButton /></Col>
+            <Col offset={8} span={8}><Search placeholder='关键字,作者,类别,标签...' size='middle' onChange={(v) => this.changeState('filterKeyword', v.target.value)} onSearch={v => {this.onSearch(v)}} enterButton /></Col>
           </Row>
           <Row>
             <Tabs onChange={v => {this.onTabChange(v)}} type='line' style={{width:'100%'}} defaultActiveKey='recommend'>

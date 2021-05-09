@@ -134,14 +134,17 @@ class CodeDetail extends Component {
                           })}
                         </Space>
                       </Text>
-                      <Text type='secondary'>简介: <Text>{codeMessage.desc}</Text></Text>
+                      <Text type='secondary'>简介:<Text>{codeMessage.desc}</Text>
+                      </Text>
                     </Space>
                   </Col>
                 </Row>
                 <Row style={{marginTop:'30px'}}>
                   <Title level={4}>详细介绍</Title>
                   <Divider style={{margin:'10px 0 24px 0'}}/>
-                  {codeMessage.detail ? <div className='html-wrap' dangerouslySetInnerHTML={{ __html: codeMessage.detail }} /> : <Empty style={{marginLeft:'10em'}} description='暂无详细介绍...' />}
+                  <div>
+                    {codeMessage.detail ? <div className='html-wrap' dangerouslySetInnerHTML={{ __html: codeMessage.detail }} /> : <Empty style={{marginLeft:'10em'}} description='暂无详细介绍...' />}
+                  </div>
                 </Row>
               </TabPane>
 

@@ -21,18 +21,19 @@ export default {
       })
     },
     * codeDebug ( {payload}, {select, call, put}) {
-      console.debug('payload=', payload)
       const {params, callbackFunc} = payload
-      console.debug('params=', params)
       let res = yield call(codeMasterAPI, '/createCode/debug', params, true)
       callbackFunc(res)
     },
     * codeSubmit ( {payload}, {select, call, put}) {
-      console.debug('payload=', payload)
       const {params, callbackFunc} = payload
-      console.debug('params=', params)
       let res = yield call(codeMasterAPI, '/createCode/submit', params, true)
-      callbackFunc(res)
+      console.debug('res=', res)
+      if (!res) {
+        callbackFunc(false, res)
+      }else{
+        callbackFunc(true, res)
+      }
     },
   }
 }

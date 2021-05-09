@@ -42,7 +42,7 @@ class Wrapper extends Component {
     const { Header, Footer, Content } = Layout
     const { activityKey, netEasyIframDisplay, musicID } = this.state
     return (
-      <Layout style={{minHeight: '100vh', width: '100vw', backgroundColor:'rgba(255, 255, 255, 0.3)'}}>
+      <Layout style={{minHeight: '100vh', width: '100vw', minWidth:'1200px', backgroundColor:'rgba(255, 255, 255, 0.3)'}}>
         <Header style={{backgroundColor:'white', padding:'0'}}>
           <a style={{float:'left', width:'200px', height:'100%'}} >
             <img src='./assets/logo.PNG' alt='logo' style={{width:'100%', height:'100%'}} />

@@ -62,7 +62,7 @@ class CreateCode extends Component {
           console.debug('the file have been set...')
         }
       }, 500)
-      
+
     }
   }
   // 调用 model 处理函数
@@ -217,10 +217,14 @@ class CreateCode extends Component {
       return
     }
     // TODO: 提交
-    let callbackFunc = (ok) => {
+    let callbackFunc = (ok, id) => {
       if (ok) {
         message.success('提交成功!')
         this.submitRef.resetFields()
+        // 转调到作品详情页面
+        setTimeout(() => {
+          this.props.history.push(`/codeDetail?id=${id}`)
+        }, 2000)
       }else{
         message.error('出错了,请稍后再试...')
       }
