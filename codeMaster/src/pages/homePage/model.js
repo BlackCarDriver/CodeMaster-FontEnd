@@ -60,6 +60,10 @@ export default {
         res[i].tags = res[i].tagStr.split(' ', -1)
         res[i].typeStr = codeTypeFormater(res[i].ctype)
       }
+      // 根据评分进行排序
+      res = res.sort((a, b) => {
+        return a.score < b.score ? 1 : -1
+      })
       yield put({
         type: 'updateState',
         payload: { name: 'rawList', newValue: res }

@@ -16,11 +16,14 @@ class HomePage extends Component {
   }
   componentDidMount = () => {
     this.callModel('queryWorksList')
+    console.debug('width=', window.screen.width)
+    if (window.screen.width < 1000) {
+      alert('为获得更好的使用体验，请到电脑浏览器上使用🔊')
+    }
     let setMiddle = () => { // 让题目卡片居中显示
       if (!this.boxref) {
         return false
       }
-      console.debug('this.boxref=', this.boxref)
       const {scrollWidth} = this.boxref
       const prebox = 327
       let needWidth = 0
@@ -28,7 +31,6 @@ class HomePage extends Component {
         let res = scrollWidth - i * prebox
         needWidth = i * prebox
       }
-      console.debug('scrollWidth=', scrollWidth, 'needWidth=', needWidth)
       this.setState({boxPadding: (scrollWidth - needWidth - 48) / 2})
       return true
     }

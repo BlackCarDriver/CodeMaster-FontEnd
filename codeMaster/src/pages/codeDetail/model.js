@@ -84,9 +84,7 @@ export default {
       // ]
       // console.debug('commentList=', commentList)
       const {codeID} = payload
-      console.debug('codeID=', codeID)
       let res = yield call(codeMasterAPI, `/codeDetail/getCommentList?workId=${codeID}`, null, false)
-      console.debug('res=', res)
       if (!res) {
         return
       }
@@ -99,7 +97,6 @@ export default {
     *subMitComment ({payload}, {select, call, put}) {
       const {params, callbackFunc} = payload
       let res = yield call(codeMasterAPI, '/codeDetail/submitComment', params, true)
-      console.debug('res=', res)
       if (res) {
         callbackFunc(true)
       }else{
@@ -115,7 +112,6 @@ export default {
         return
       }
       const { stdErr, stdOut } = res
-      console.debug(res)
       if (stdErr != '') {
         callbackFunc(false, stdErr)
         return

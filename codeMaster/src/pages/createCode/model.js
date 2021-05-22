@@ -28,7 +28,6 @@ export default {
     * codeSubmit ( {payload}, {select, call, put}) {
       const {params, callbackFunc} = payload
       let res = yield call(codeMasterAPI, '/createCode/submit', params, true)
-      console.debug('res=', res)
       if (!res) {
         callbackFunc(false, res)
       }else{
